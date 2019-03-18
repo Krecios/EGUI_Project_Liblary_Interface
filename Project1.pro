@@ -14,8 +14,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    addpopup.cpp \
+    editpopup.cpp \
+    deletedialog.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    addpopup.h \
+    editpopup.h \
+    deletedialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    addpopup.ui \
+    editpopup.ui \
+    deletedialog.ui
