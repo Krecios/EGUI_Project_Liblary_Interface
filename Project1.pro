@@ -22,7 +22,8 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     addpopup.h \
     editpopup.h \
-    deletedialog.h
+    deletedialog.h \
+    book.h
 
 FORMS    += mainwindow.ui \
     addpopup.ui \

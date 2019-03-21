@@ -2,6 +2,8 @@
 #define ADDPOPUP_H
 
 #include <QDialog>
+#include "mainwindow.h"
+#include "book.h"
 
 namespace Ui {
 class AddPopup;
@@ -14,6 +16,7 @@ class AddPopup : public QDialog
 public:
     explicit AddPopup(QWidget *parent = 0);
     ~AddPopup();
+    Book *ToBeAdded;
 
 private slots:
     void on_pushButton_clicked();

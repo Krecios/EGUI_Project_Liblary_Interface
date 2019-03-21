@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QString>
 #include <QComboBox>
+#include "book.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,15 +25,11 @@ public:
 private slots:
     void on_pushButton_5_clicked();
 
-    void startup();
-
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
 
     void on_pushButton_3_clicked();
-
-    void filter();
 
     void on_pushButton_4_clicked();
 
@@ -40,6 +37,10 @@ private:
     Ui::MainWindow *ui;
     QComboBox *clr;
     bool FirstStartup = true;
+    Liblary *Lib = new Liblary;
+    void filter();
+    void yearCombo();
+    void start();
 };
 
 #endif // MAINWINDOW_H

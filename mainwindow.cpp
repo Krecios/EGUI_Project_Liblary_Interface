@@ -3,11 +3,16 @@
 #include "addpopup.h"
 #include "editpopup.h"
 #include "deletedialog.h"
+#include "book.h"
+#include "addpopup.h"
 #include <QTableView>
 #include <QTextStream>
 #include <QStandardItemModel>
 #include <QFile>
 #include <QString>
+#include <QList>
+#include <QVariant>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,8 +20,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     clr=ui->comboBox;
-    startup();
-
+    yearCombo();
+    //start();
+    Book *t1 = new Book("a","b","c");
+    Book *t2 = new Book("aa","bb","cc");
+    Book *t3 = new Book("aaa","bbb","ccc");
+    Lib->addBook(t1);
+    Lib->addBook(t2);
+    ui->tableView->setModel(Lib);
+    Lib->addBook(t3);
+    ui->tableView->setModel(Lib);
+    Lib->SaveToFile();
 }
 
 MainWindow::~MainWindow()
@@ -24,14 +38,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::startup()
+void MainWindow::start()
 {
-    QStandardItemModel *model = new QStandardItemModel;
+    //Liblary *Lib = new Liblary;
+    Lib->LoadFromFile();
+    Lib->setHeaderData(0, Qt::Horizontal, QObject::tr("Author"));
+    Lib->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
+    Lib->setHeaderData(2, Qt::Horizontal, QObject::tr("Year"));
+
+    ui->tableView->setModel(Lib);
+    ui->tableView->verticalHeader()->hide();
+    ui->tableView->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+}
+
+void MainWindow::yearCombo()
+{
     QStringList year;
     QFile file("BooksDatabase.csv");
     if (file.open(QIODevice::ReadOnly))
     {
-        int lineindex = 0;
         QTextStream in(&file);
 
         while(!in.atEnd())
@@ -40,28 +68,15 @@ void MainWindow::startup()
             QStringList lineToken = fileLine.split(";",QString::SkipEmptyParts);
             for (int j=0; j<lineToken.size();j++)
             {
-                QString value = lineToken.at(j);
                 if (j == 2)
                 {
                     year<<lineToken.at(j);
                 }
-                QStandardItem *item = new QStandardItem(value);
-                model->setItem(lineindex, j, item);
             }
-            lineindex++;
         }
         file.close();
 
-        model->setHeaderData(0, Qt::Horizontal, QObject::tr("Author"));
-        model->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
-        model->setHeaderData(2, Qt::Horizontal, QObject::tr("Year"));
     }
-    ui->tableView->setModel(model);
-    ui->tableView->verticalHeader()->hide();
-    ui->tableView->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     if(FirstStartup == true)
     {
@@ -76,7 +91,7 @@ void MainWindow::on_pushButton_5_clicked()
 {
     clr->setCurrentIndex(-1);
     FirstStartup = false;
-    startup();
+    start();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -84,6 +99,9 @@ void MainWindow::on_pushButton_clicked()
     AddPopup addDialog;
     addDialog.setModal(true);
     addDialog.exec();
+   /* Book *Added = AddPopup::ToBeAdded;
+    Lib->addBook(Added);
+    ui->tableView->setModel(Lib);*/
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -107,7 +125,7 @@ void MainWindow::filter()
     QString YearFilter;
     int CurrentDisplayRow = 0;
     int CaseID = 0;
-    QStandardItemModel *FilteredData = new QStandardItemModel;
+    Liblary *Lib = new Liblary;
     QFile file("BooksDatabase.csv");
 
     AuthorFilter = ui->textEdit_2->toPlainText();
@@ -136,105 +154,70 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(0) == AuthorFilter)
                     {
-                        for (int j=0; j<lineToken.size(); j++)
-                        {
-                            QString value = lineToken.at(j);
-                            QStandardItem *item = new QStandardItem(value);
-                            FilteredData->setItem(CurrentDisplayRow, j, item);
-                        }
-                         CurrentDisplayRow++;
-                }
-                lineindex++;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Lib->addBook(newBook);
+                    }
+                    lineindex++;
                 break;
                 }
                 case 2:
                 {
                     if (lineToken.at(1) == TitleFilter)
                     {
-                        for (int j=0; j<lineToken.size(); j++)
-                        {
-                            QString value = lineToken.at(j);
-                            QStandardItem *item = new QStandardItem(value);
-                            FilteredData->setItem(CurrentDisplayRow, j, item);
-                        }
-                         CurrentDisplayRow++;
-                }
-                lineindex++;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Lib->addBook(newBook);;
+                    }
+                    lineindex++;
                 break;
                 }
                 case 3:
                 {
                     if (lineToken.at(2) == YearFilter)
                     {
-                        for (int j=0; j<lineToken.size(); j++)
-                        {
-                            QString value = lineToken.at(j);
-                            QStandardItem *item = new QStandardItem(value);
-                            FilteredData->setItem(CurrentDisplayRow, j, item);
-                        }
-                         CurrentDisplayRow++;
-                }
-                lineindex++;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Lib->addBook(newBook);
+                    }
+                    lineindex++;
                 break;
                 }
                 case 4:
                 {
                     if (lineToken.at(0) == AuthorFilter && lineToken.at(1) == TitleFilter)
                     {
-                        for (int j=0; j<lineToken.size(); j++)
-                        {
-                            QString value = lineToken.at(j);
-                            QStandardItem *item = new QStandardItem(value);
-                            FilteredData->setItem(CurrentDisplayRow, j, item);
-                        }
-                         CurrentDisplayRow++;
-                }
-                lineindex++;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Lib->addBook(newBook);
+                    }
+                    lineindex++;
                 break;
                 }
                 case 5:
                 {
                     if (lineToken.at(0) == AuthorFilter && lineToken.at(2) == YearFilter)
                     {
-                        for (int j=0; j<lineToken.size(); j++)
-                        {
-                            QString value = lineToken.at(j);
-                            QStandardItem *item = new QStandardItem(value);
-                            FilteredData->setItem(CurrentDisplayRow, j, item);
-                        }
-                         CurrentDisplayRow++;
-                }
-                lineindex++;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Lib->addBook(newBook);
+                    }
+                    lineindex++;
                 break;
                 }
                 case 6:
                 {
                     if (lineToken.at(1) == TitleFilter && lineToken.at(2) == YearFilter)
                     {
-                        for (int j=0; j<lineToken.size(); j++)
-                        {
-                            QString value = lineToken.at(j);
-                            QStandardItem *item = new QStandardItem(value);
-                            FilteredData->setItem(CurrentDisplayRow, j, item);
-                        }
-                         CurrentDisplayRow++;
-                }
-                lineindex++;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Lib->addBook(newBook);
+                    }
+                    lineindex++;
                 break;
                 }
                 case 7:
                 {
                     if (lineToken.at(0) == AuthorFilter && lineToken.at(1) == TitleFilter && lineToken.at(2) == YearFilter)
                     {
-                        for (int j=0; j<lineToken.size(); j++)
-                        {
-                            QString value = lineToken.at(j);
-                            QStandardItem *item = new QStandardItem(value);
-                            FilteredData->setItem(CurrentDisplayRow, j, item);
-                        }
-                         CurrentDisplayRow++;
-                }
-                lineindex++;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Lib->addBook(newBook);
+                    }
+                    lineindex++;
                 break;
                 }
             }
@@ -242,13 +225,13 @@ void MainWindow::filter()
         file.close();
     }
 
-    FilteredData->setHeaderData(0, Qt::Horizontal, QObject::tr("Author"));
-    FilteredData->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
-    FilteredData->setHeaderData(2, Qt::Horizontal, QObject::tr("Year"));
+    Lib->setHeaderData(0, Qt::Horizontal, QObject::tr("Author"));
+    Lib->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
+    Lib->setHeaderData(2, Qt::Horizontal, QObject::tr("Year"));
 
     if(CaseID != 0)
     {
-        ui->tableView->setModel(FilteredData);
+        ui->tableView->setModel(Lib);
         ui->tableView->verticalHeader()->hide();
         if(CurrentDisplayRow != 0)
         {
