@@ -21,8 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     clr=ui->comboBox;
     yearCombo();
-    //start();
-    Book *t1 = new Book("a","b","c");
+    start();
+    /*Book *t1 = new Book("a","b","c");
     Book *t2 = new Book("aa","bb","cc");
     Book *t3 = new Book("aaa","bbb","ccc");
     Lib->addBook(t1);
@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setModel(Lib);
     Lib->addBook(t3);
     ui->tableView->setModel(Lib);
-    Lib->SaveToFile();
+    Lib->SaveToFile();*/
 }
 
 MainWindow::~MainWindow()
@@ -40,7 +40,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::start()
 {
-    //Liblary *Lib = new Liblary;
+    Lib = new Liblary;
     Lib->LoadFromFile();
     Lib->setHeaderData(0, Qt::Horizontal, QObject::tr("Author"));
     Lib->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
@@ -96,12 +96,17 @@ void MainWindow::on_pushButton_5_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
+    Book *Added;
     AddPopup addDialog;
     addDialog.setModal(true);
     addDialog.exec();
-   /* Book *Added = AddPopup::ToBeAdded;
-    Lib->addBook(Added);
-    ui->tableView->setModel(Lib);*/
+    if(addDialog.Confirm == true)
+    {
+        Added = addDialog.GetData();
+        Lib->addBook(Added);
+        Lib->SaveToFile();
+        start();
+    }
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -144,6 +149,7 @@ void MainWindow::filter()
     {
         int lineindex = 0;
         QTextStream in(&file);
+        int RowCount = 0;
         while(!in.atEnd())
         {
             QString fileLine = in.readLine();
@@ -154,8 +160,9 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(0) == AuthorFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
                         Lib->addBook(newBook);
+                        RowCount++;
                     }
                     lineindex++;
                 break;
@@ -164,8 +171,9 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(1) == TitleFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
-                        Lib->addBook(newBook);;
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
+                        Lib->addBook(newBook);
+                        RowCount++;
                     }
                     lineindex++;
                 break;
@@ -174,8 +182,9 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(2) == YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
                         Lib->addBook(newBook);
+                        RowCount++;
                     }
                     lineindex++;
                 break;
@@ -184,8 +193,9 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(0) == AuthorFilter && lineToken.at(1) == TitleFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
                         Lib->addBook(newBook);
+                        RowCount++;
                     }
                     lineindex++;
                 break;
@@ -194,8 +204,9 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(0) == AuthorFilter && lineToken.at(2) == YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
                         Lib->addBook(newBook);
+                        RowCount++;
                     }
                     lineindex++;
                 break;
@@ -204,8 +215,9 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(1) == TitleFilter && lineToken.at(2) == YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
                         Lib->addBook(newBook);
+                        RowCount++;
                     }
                     lineindex++;
                 break;
@@ -214,8 +226,9 @@ void MainWindow::filter()
                 {
                     if (lineToken.at(0) == AuthorFilter && lineToken.at(1) == TitleFilter && lineToken.at(2) == YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
                         Lib->addBook(newBook);
+                        RowCount++;
                     }
                     lineindex++;
                 break;

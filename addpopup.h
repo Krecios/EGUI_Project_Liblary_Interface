@@ -16,7 +16,11 @@ class AddPopup : public QDialog
 public:
     explicit AddPopup(QWidget *parent = 0);
     ~AddPopup();
-    Book *ToBeAdded;
+    Book *GetData()
+    {
+        return ToBeAdded;
+    }
+    bool Confirm = false;
 
 private slots:
     void on_pushButton_clicked();
@@ -25,6 +29,7 @@ private slots:
 
 private:
     Ui::AddPopup *ui;
+    Book* ToBeAdded;
 };
 
 #endif // ADDPOPUP_H

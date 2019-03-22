@@ -3,6 +3,7 @@
 
 class Book{
 private:
+    int index;
     QString Author;
     QString Title;
     QString Year;
@@ -11,11 +12,12 @@ public:
     {
     }
 
-    Book(QString NA, QString NT, QString NY)
+    Book(QString NA, QString NT, QString NY, int NI)
     {
         Author = NA;
         Title = NT;
         Year = NY;
+        index = NI;
     }
 
     ~Book()
@@ -35,6 +37,11 @@ public:
     QString getYear()
     {
         return Year;
+    }
+
+    int getIndex()
+    {
+        return index;
     }
 };
 
@@ -63,12 +70,14 @@ public:
         if(file.open(QIODevice::ReadOnly))
         {
             QTextStream in(&file);
+            int RowCount = 0;
             while(!in.atEnd())
             {
                 QString fileLine = in.readLine();
                 QStringList lineToken = fileLine.split(";",QString::SkipEmptyParts);
-                Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2));
+                Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
                 Lib.append(newBook);
+                RowCount++;
             }
         }
         file.close();
@@ -77,9 +86,9 @@ public:
     void SaveToFile()
     {
         QFile file("BooksDatabase.csv");
+        file.remove();
         if(file.open(QIODevice::ReadWrite))
         {
-            QTextStream in(&file);
             QTextStream stream(&file);
             for(int i=0; i<Lib.count(); i++)
                 {
@@ -103,13 +112,15 @@ public:
                 return Lib[index.row()]->getTitle();
             if(index.column() == 2)
                 return Lib[index.row()]->getYear();
+            if(index.column() == 3)
+                return Lib[index.row()]->getIndex();
         }
 
     }
 
     int columnCount(const QModelIndex &parent) const
     {
-        return 3;
+        return 4;
     }
 
     int rowCount(const QModelIndex &parent) const
