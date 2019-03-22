@@ -22,15 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
     clr=ui->comboBox;
     yearCombo();
     start();
-    /*Book *t1 = new Book("a","b","c");
-    Book *t2 = new Book("aa","bb","cc");
-    Book *t3 = new Book("aaa","bbb","ccc");
-    Lib->addBook(t1);
-    Lib->addBook(t2);
-    ui->tableView->setModel(Lib);
-    Lib->addBook(t3);
-    ui->tableView->setModel(Lib);
-    Lib->SaveToFile();*/
 }
 
 MainWindow::~MainWindow()
@@ -47,6 +38,7 @@ void MainWindow::start()
     Lib->setHeaderData(2, Qt::Horizontal, QObject::tr("Year"));
 
     ui->tableView->setModel(Lib);
+    //ui->tableView->hideColumn(3);
     ui->tableView->verticalHeader()->hide();
     ui->tableView->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
@@ -91,6 +83,7 @@ void MainWindow::on_pushButton_5_clicked()
 {
     clr->setCurrentIndex(-1);
     FirstStartup = false;
+    ShowAll(Lib);
     start();
 }
 
@@ -98,6 +91,7 @@ void MainWindow::on_pushButton_clicked()
 {
     Book *Added;
     AddPopup addDialog;
+    addDialog.Confirm = false;
     addDialog.setModal(true);
     addDialog.exec();
     if(addDialog.Confirm == true)
@@ -111,16 +105,45 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    Book *Edit;
     EditPopup editDialog;
+    int Row = ui->tableView->selectionModel()->currentIndex().row();
+    QString EAuthor = Lib->AuthorFromIndex(Row);
+    QString ETitle = Lib->TitleFromIndex(Row);
+    QString EYear = Lib->YearFromIndex(Row);
+    editDialog.Author = EAuthor;
+    editDialog.Title = ETitle;
+    editDialog.Year = EYear;
+    editDialog.setAuthor();
+    editDialog.setTitle();
+    editDialog.setYear();
     editDialog.setModal(true);
     editDialog.exec();
+    if(editDialog.Confirm == true)
+    {
+       int Row = ui->tableView->selectionModel()->currentIndex().row();
+       Edit = editDialog.GetData();
+       Edit->ModifyIndex(Row);
+       Lib->removeBook(Row);
+       Lib->SwapContent(Row, Edit);
+       Lib->SaveToFile();
+    }
+    start();
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
     DeleteDialog delDialog;
+    delDialog.Confirm = false;
     delDialog.setModal(true);
     delDialog.exec();
+    if(delDialog.Confirm == true)
+    {
+        int Row = ui->tableView->selectionModel()->currentIndex().row();
+        Lib->removeBook(Row);
+        Lib->SaveToFile();
+    }
+    start();
 }
 
 void MainWindow::filter()
@@ -130,7 +153,6 @@ void MainWindow::filter()
     QString YearFilter;
     int CurrentDisplayRow = 0;
     int CaseID = 0;
-    Liblary *Lib = new Liblary;
     QFile file("BooksDatabase.csv");
 
     AuthorFilter = ui->textEdit_2->toPlainText();
@@ -158,82 +180,69 @@ void MainWindow::filter()
             {
                 case 1:
                 {
-                    if (lineToken.at(0) == AuthorFilter)
+                    if (lineToken.at(0) != AuthorFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
-                        Lib->addBook(newBook);
-                        RowCount++;
+                        ui->tableView->hideRow(RowCount);
                     }
                     lineindex++;
                 break;
                 }
                 case 2:
                 {
-                    if (lineToken.at(1) == TitleFilter)
+                    if (lineToken.at(1) != TitleFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
-                        Lib->addBook(newBook);
-                        RowCount++;
+                        ui->tableView->hideRow(RowCount);
                     }
                     lineindex++;
                 break;
                 }
                 case 3:
                 {
-                    if (lineToken.at(2) == YearFilter)
+                    if (lineToken.at(2) != YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
-                        Lib->addBook(newBook);
-                        RowCount++;
+                        ui->tableView->hideRow(RowCount);
                     }
                     lineindex++;
                 break;
                 }
                 case 4:
                 {
-                    if (lineToken.at(0) == AuthorFilter && lineToken.at(1) == TitleFilter)
+                    if (lineToken.at(0) != AuthorFilter || lineToken.at(1) != TitleFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
-                        Lib->addBook(newBook);
-                        RowCount++;
+                        ui->tableView->hideRow(RowCount);
                     }
                     lineindex++;
                 break;
                 }
                 case 5:
                 {
-                    if (lineToken.at(0) == AuthorFilter && lineToken.at(2) == YearFilter)
+                    if (lineToken.at(0) != AuthorFilter || lineToken.at(2) != YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
-                        Lib->addBook(newBook);
-                        RowCount++;
+                        ui->tableView->hideRow(RowCount);
                     }
                     lineindex++;
                 break;
                 }
                 case 6:
                 {
-                    if (lineToken.at(1) == TitleFilter && lineToken.at(2) == YearFilter)
+                    if (lineToken.at(1) != TitleFilter || lineToken.at(2) != YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
-                        Lib->addBook(newBook);
-                        RowCount++;
+                        ui->tableView->hideRow(RowCount);
                     }
                     lineindex++;
                 break;
                 }
                 case 7:
                 {
-                    if (lineToken.at(0) == AuthorFilter && lineToken.at(1) == TitleFilter && lineToken.at(2) == YearFilter)
+                    if (lineToken.at(0) != AuthorFilter || lineToken.at(1) != TitleFilter || lineToken.at(2) != YearFilter)
                     {
-                        Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
-                        Lib->addBook(newBook);
-                        RowCount++;
+                        ui->tableView->hideRow(RowCount);
                     }
                     lineindex++;
                 break;
                 }
             }
+            RowCount++;
         }
         file.close();
     }
@@ -259,4 +268,12 @@ void MainWindow::filter()
 void MainWindow::on_pushButton_4_clicked()
 {
     filter();
+}
+
+void MainWindow::ShowAll(Liblary *Show)
+{
+    for(int i=0; i<Show->Size(); i++)
+    {
+        ui->tableView->showRow(i);
+    }
 }

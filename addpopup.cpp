@@ -15,7 +15,7 @@ AddPopup::~AddPopup()
 
 void AddPopup::on_pushButton_clicked()
 {
-    ToBeAdded = new Book(ui->textEdit->toPlainText(), ui->textEdit_2->toPlainText(), ui->textEdit_3->toPlainText());
+    ToBeAdded = new Book(ui->textEdit->toPlainText(), ui->textEdit_2->toPlainText(), ui->textEdit_3->toPlainText(), 0);
     Confirm = true;
     AddPopup::close();
 }

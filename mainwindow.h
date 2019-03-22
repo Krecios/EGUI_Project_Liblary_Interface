@@ -41,6 +41,7 @@ private:
     void filter();
     void yearCombo();
     void start();
+    void ShowAll(Liblary *Show);
 };
 
 #endif // MAINWINDOW_H

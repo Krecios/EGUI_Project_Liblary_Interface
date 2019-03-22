@@ -43,6 +43,26 @@ public:
     {
         return index;
     }
+
+    void ModifyAuthor(QString NewAuthor)
+    {
+        Author = NewAuthor;
+    }
+
+    void ModifyTitle(QString NewTitle)
+    {
+        Title = NewTitle;
+    }
+
+    void ModifyYear(QString NewYear)
+    {
+        Year = NewYear;
+    }
+
+    void ModifyIndex(int NewIndex)
+    {
+        index = NewIndex;
+    }
 };
 
 class Liblary : public QAbstractTableModel
@@ -58,6 +78,66 @@ public:
     void ModifyLib(QList<Book*> NewLib)
     {
         Lib = NewLib;
+    }
+
+    void removeBook(int index)
+    {
+        for(int i = 0; i<Lib.count(); i++)
+        {
+            if(Lib[i]->getIndex() == index)
+            {
+                Lib.removeOne(Lib[i]);
+            }
+        }
+    }
+
+    QString AuthorFromIndex(int index)
+    {
+        for(int i = 0; i<Lib.count(); i++)
+        {
+            if(Lib[i]->getIndex() == index)
+            {
+                return Lib[i]->getAuthor();
+            }
+        }
+    }
+
+    QString TitleFromIndex(int index)
+    {
+        for(int i = 0; i<Lib.count(); i++)
+        {
+            if(Lib[i]->getIndex() == index)
+            {
+                return Lib[i]->getTitle();
+            }
+        }
+    }
+
+    QString YearFromIndex(int index)
+    {
+        for(int i = 0; i<Lib.count(); i++)
+        {
+            if(Lib[i]->getIndex() == index)
+            {
+                return Lib[i]->getYear();
+            }
+        }
+    }
+
+    void ModifyOnIndex(int index, QString NewAuthor, QString NewTitle, QString NewYear)
+    {
+        for(int i = 0; i<Lib.count(); i++)
+        {
+            if(Lib[i]->getIndex() == index)
+            {
+                Book *Modify = Lib[i];
+                Modify->ModifyAuthor(NewAuthor);
+                Modify->ModifyTitle(NewTitle);
+                Modify->ModifyYear(NewYear);
+                removeBook(index);
+                addBook(Modify);
+            }
+        }
     }
 
     void addBook(Book *newBook)
@@ -128,7 +208,20 @@ public:
         return Lib.count();
     }
 
-
+    void SwapContent(int index, Book* Swap)
+    {
+        for(int i=0; i<Lib.count(); i++)
+        {
+            if(i == index)
+            {
+                Lib[i] = Swap;
+            }
+        }
+    }
+    int Size()
+    {
+        return Lib.count();
+    }
 };
 
 #endif // BOOK_H

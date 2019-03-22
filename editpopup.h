@@ -2,6 +2,8 @@
 #define EDITPOPUP_H
 
 #include <QDialog>
+#include "mainwindow.h"
+#include "book.h"
 
 namespace Ui {
 class EditPopup;
@@ -14,6 +16,17 @@ class EditPopup : public QDialog
 public:
     explicit EditPopup(QWidget *parent = 0);
     ~EditPopup();
+    bool Confirm = false;
+    QString Author;
+    QString Title;
+    QString Year;
+    void setAuthor();
+    void setTitle();
+    void setYear();
+    Book *GetData()
+    {
+        return ToBeEdited;
+    }
 
 private slots:
     void on_pushButton_clicked();
@@ -22,6 +35,7 @@ private slots:
 
 private:
     Ui::EditPopup *ui;
+    Book *ToBeEdited;
 };
 
 #endif // EDITPOPUP_H

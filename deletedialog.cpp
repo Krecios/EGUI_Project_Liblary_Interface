@@ -15,6 +15,7 @@ DeleteDialog::~DeleteDialog()
 
 void DeleteDialog::on_pushButton_clicked()
 {
+    Confirm = true;
     DeleteDialog::close();
 }
 
