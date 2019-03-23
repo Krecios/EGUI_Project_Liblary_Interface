@@ -17,15 +17,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     addpopup.cpp \
     editpopup.cpp \
-    deletedialog.cpp
+    deletedialog.cpp \
+    errorpopup.cpp
 
 HEADERS  += mainwindow.h \
     addpopup.h \
     editpopup.h \
     deletedialog.h \
-    book.h
+    book.h \
+    errorpopup.h
 
 FORMS    += mainwindow.ui \
     addpopup.ui \
     editpopup.ui \
-    deletedialog.ui
+    deletedialog.ui \
+    errorpopup.ui

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "mainwindow.h"
 #include "book.h"
+#include "errorpopup.h"
 
 namespace Ui {
 class AddPopup;

@@ -38,7 +38,7 @@ void MainWindow::start()
     Lib->setHeaderData(2, Qt::Horizontal, QObject::tr("Year"));
 
     ui->tableView->setModel(Lib);
-    //ui->tableView->hideColumn(3);
+    ui->tableView->hideColumn(3);
     ui->tableView->verticalHeader()->hide();
     ui->tableView->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
     ui->tableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
@@ -124,7 +124,6 @@ void MainWindow::on_pushButton_2_clicked()
        int Row = ui->tableView->selectionModel()->currentIndex().row();
        Edit = editDialog.GetData();
        Edit->ModifyIndex(Row);
-       Lib->removeBook(Row);
        Lib->SwapContent(Row, Edit);
        Lib->SaveToFile();
     }
@@ -139,8 +138,16 @@ void MainWindow::on_pushButton_3_clicked()
     delDialog.exec();
     if(delDialog.Confirm == true)
     {
-        int Row = ui->tableView->selectionModel()->currentIndex().row();
-        Lib->removeBook(Row);
+        //QList<int> Row = ui->tableView->selectionModel()->currentIndex().row();
+        auto selection = ui->tableView->selectionModel();
+        if(selection->hasSelection())
+        {
+            for(auto Row : selection->selection().indexes())
+            {
+                Lib->removeBook(Row.row());
+            }
+        }
+        //Lib->removeBook(Row);
         Lib->SaveToFile();
     }
     start();

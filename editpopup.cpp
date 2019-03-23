@@ -16,6 +16,15 @@ EditPopup::~EditPopup()
 void EditPopup::on_pushButton_clicked()
 {
     ToBeEdited = new Book(ui->textEdit->toPlainText(), ui->textEdit_2->toPlainText(), ui->textEdit_3->toPlainText(), 0);
+    if(ui->textEdit->toPlainText() == "" || ui->textEdit_2->toPlainText() == "" || ui->textEdit_3->toPlainText() == "")
+    {
+        ErrorPopup Error;
+        Error.setModal(true);
+        Error.exec();
+        Confirm = false;
+        EditPopup::close();
+        return;
+    }
     Confirm = true;
     EditPopup::close();
 }
