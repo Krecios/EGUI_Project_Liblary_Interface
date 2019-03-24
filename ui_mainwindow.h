@@ -17,12 +17,12 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableView>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -37,14 +37,14 @@ public:
     QPushButton *pushButton_3;
     QTableView *tableView;
     QGroupBox *groupBox;
-    QTextEdit *textEdit_2;
-    QTextEdit *textEdit;
     QComboBox *comboBox;
     QPushButton *pushButton_4;
     QPushButton *pushButton_5;
     QLabel *label;
     QLabel *label_2;
     QLabel *label_3;
+    QLineEdit *lineEdit;
+    QLineEdit *lineEdit_2;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -71,12 +71,6 @@ public:
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(10, 10, 901, 101));
-        textEdit_2 = new QTextEdit(groupBox);
-        textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
-        textEdit_2->setGeometry(QRect(40, 40, 121, 31));
-        textEdit = new QTextEdit(groupBox);
-        textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(230, 40, 121, 31));
         comboBox = new QComboBox(groupBox);
         comboBox->setObjectName(QStringLiteral("comboBox"));
         comboBox->setGeometry(QRect(410, 40, 111, 31));
@@ -95,6 +89,12 @@ public:
         label_3 = new QLabel(groupBox);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setGeometry(QRect(410, 20, 47, 13));
+        lineEdit = new QLineEdit(groupBox);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setGeometry(QRect(40, 40, 141, 31));
+        lineEdit_2 = new QLineEdit(groupBox);
+        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+        lineEdit_2->setGeometry(QRect(230, 40, 141, 31));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -108,8 +108,6 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         retranslateUi(MainWindow);
-        QObject::connect(pushButton_5, SIGNAL(clicked()), textEdit, SLOT(clear()));
-        QObject::connect(pushButton_5, SIGNAL(clicked()), textEdit_2, SLOT(clear()));
         QObject::connect(tableView, SIGNAL(doubleClicked(QModelIndex)), pushButton_2, SLOT(click()));
 
         QMetaObject::connectSlotsByName(MainWindow);

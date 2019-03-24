@@ -1,10 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "addpopup.h"
-#include "editpopup.h"
 #include "deletedialog.h"
 #include "book.h"
 #include "addpopup.h"
+#include "selecterror.h"
 #include <QTableView>
 #include <QTextStream>
 #include <QStandardItemModel>
@@ -33,9 +33,6 @@ void MainWindow::start()
 {
     Lib = new Liblary;
     Lib->LoadFromFile();
-    Lib->setHeaderData(0, Qt::Horizontal, QObject::tr("Author"));
-    Lib->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
-    Lib->setHeaderData(2, Qt::Horizontal, QObject::tr("Year"));
 
     ui->tableView->setModel(Lib);
     ui->tableView->hideColumn(3);
@@ -91,6 +88,8 @@ void MainWindow::on_pushButton_clicked()
 {
     Book *Added;
     AddPopup addDialog;
+    addDialog.SwapButton("Add");
+    addDialog.Add = true;
     addDialog.Confirm = false;
     addDialog.setModal(true);
     addDialog.exec();
@@ -99,14 +98,26 @@ void MainWindow::on_pushButton_clicked()
         Added = addDialog.GetData();
         Lib->addBook(Added);
         Lib->SaveToFile();
-        start();
     }
+    addDialog.Add = false;
+    start();
+    filter();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    auto selection = ui->tableView->selectionModel();
+    if(!selection->hasSelection())
+    {
+        SelectError Error;
+        Error.setModal(true);
+        Error.exec();
+        return;
+    }
     Book *Edit;
-    EditPopup editDialog;
+    AddPopup editDialog;
+    editDialog.SwapButton("Save");
+    editDialog.Edit = true;
     int Row = ui->tableView->selectionModel()->currentIndex().row();
     QString EAuthor = Lib->AuthorFromIndex(Row);
     QString ETitle = Lib->TitleFromIndex(Row);
@@ -127,19 +138,27 @@ void MainWindow::on_pushButton_2_clicked()
        Lib->SwapContent(Row, Edit);
        Lib->SaveToFile();
     }
+    editDialog.Edit = false;
     start();
+    filter();
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    auto selection = ui->tableView->selectionModel();
+    if(!selection->hasSelection())
+    {
+        SelectError Error;
+        Error.setModal(true);
+        Error.exec();
+        return;
+    }
     DeleteDialog delDialog;
     delDialog.Confirm = false;
     delDialog.setModal(true);
     delDialog.exec();
     if(delDialog.Confirm == true)
     {
-        //QList<int> Row = ui->tableView->selectionModel()->currentIndex().row();
-        auto selection = ui->tableView->selectionModel();
         if(selection->hasSelection())
         {
             for(auto Row : selection->selection().indexes())
@@ -147,7 +166,6 @@ void MainWindow::on_pushButton_3_clicked()
                 Lib->removeBook(Row.row());
             }
         }
-        //Lib->removeBook(Row);
         Lib->SaveToFile();
     }
     start();
@@ -162,8 +180,8 @@ void MainWindow::filter()
     int CaseID = 0;
     QFile file("BooksDatabase.csv");
 
-    AuthorFilter = ui->textEdit_2->toPlainText();
-    TitleFilter = ui->textEdit->toPlainText();
+    AuthorFilter = ui->lineEdit->text();
+    TitleFilter = ui->lineEdit_2->text();
     YearFilter = ui->comboBox->currentText();
 
     if(AuthorFilter != "") CaseID=1;
@@ -274,6 +292,7 @@ void MainWindow::filter()
 
 void MainWindow::on_pushButton_4_clicked()
 {
+    ShowAll(Lib);
     filter();
 }
 

@@ -22,6 +22,15 @@ public:
         return ToBeAdded;
     }
     bool Confirm = false;
+    bool Add = false;
+    bool Edit = false;
+    QString Author;
+    QString Title;
+    QString Year;
+    void setAuthor();
+    void setTitle();
+    void setYear();
+    void SwapButton(QString NewText);
 
 private slots:
     void on_pushButton_clicked();

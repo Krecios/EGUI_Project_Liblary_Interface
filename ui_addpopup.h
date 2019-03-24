@@ -16,8 +16,8 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QTextEdit>
 
 QT_BEGIN_NAMESPACE
 
@@ -26,12 +26,12 @@ class Ui_AddPopup
 public:
     QPushButton *pushButton;
     QPushButton *pushButton_2;
-    QTextEdit *textEdit;
-    QTextEdit *textEdit_2;
-    QTextEdit *textEdit_3;
-    QLabel *label;
-    QLabel *label_2;
     QLabel *label_3;
+    QLabel *label;
+    QLineEdit *lineEdit;
+    QLineEdit *lineEdit_2;
+    QLabel *label_2;
+    QLineEdit *lineEdit_3;
 
     void setupUi(QDialog *AddPopup)
     {
@@ -44,24 +44,24 @@ public:
         pushButton_2 = new QPushButton(AddPopup);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
         pushButton_2->setGeometry(QRect(260, 170, 171, 41));
-        textEdit = new QTextEdit(AddPopup);
-        textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(150, 20, 311, 31));
-        textEdit_2 = new QTextEdit(AddPopup);
-        textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
-        textEdit_2->setGeometry(QRect(150, 70, 311, 31));
-        textEdit_3 = new QTextEdit(AddPopup);
-        textEdit_3->setObjectName(QStringLiteral("textEdit_3"));
-        textEdit_3->setGeometry(QRect(150, 120, 311, 31));
-        label = new QLabel(AddPopup);
-        label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(70, 30, 47, 13));
-        label_2 = new QLabel(AddPopup);
-        label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(70, 80, 47, 13));
         label_3 = new QLabel(AddPopup);
         label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setGeometry(QRect(70, 120, 47, 20));
+        label_3->setGeometry(QRect(50, 120, 47, 20));
+        label = new QLabel(AddPopup);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(40, 30, 47, 13));
+        lineEdit = new QLineEdit(AddPopup);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setGeometry(QRect(80, 20, 321, 31));
+        lineEdit_2 = new QLineEdit(AddPopup);
+        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+        lineEdit_2->setGeometry(QRect(80, 70, 321, 31));
+        label_2 = new QLabel(AddPopup);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(50, 80, 47, 13));
+        lineEdit_3 = new QLineEdit(AddPopup);
+        lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
+        lineEdit_3->setGeometry(QRect(80, 120, 321, 31));
 
         retranslateUi(AddPopup);
 
@@ -73,9 +73,9 @@ public:
         AddPopup->setWindowTitle(QApplication::translate("AddPopup", "Dialog", Q_NULLPTR));
         pushButton->setText(QApplication::translate("AddPopup", "Add", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("AddPopup", "Cancel", Q_NULLPTR));
+        label_3->setText(QApplication::translate("AddPopup", "Year:", Q_NULLPTR));
         label->setText(QApplication::translate("AddPopup", "Author:", Q_NULLPTR));
         label_2->setText(QApplication::translate("AddPopup", "Title:", Q_NULLPTR));
-        label_3->setText(QApplication::translate("AddPopup", "Year:", Q_NULLPTR));
     } // retranslateUi
 
 };

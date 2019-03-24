@@ -2,12 +2,12 @@ INPUT(
 ./release\main.o
 ./release\mainwindow.o
 ./release\addpopup.o
-./release\editpopup.o
 ./release\deletedialog.o
 ./release\errorpopup.o
+./release\selecterror.o
 ./release\moc_mainwindow.o
 ./release\moc_addpopup.o
-./release\moc_editpopup.o
 ./release\moc_deletedialog.o
 ./release\moc_errorpopup.o
+./release\moc_selecterror.o
 );

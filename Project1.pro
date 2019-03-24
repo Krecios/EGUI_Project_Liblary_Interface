@@ -16,19 +16,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     addpopup.cpp \
-    editpopup.cpp \
     deletedialog.cpp \
-    errorpopup.cpp
+    errorpopup.cpp \
+    selecterror.cpp
 
 HEADERS  += mainwindow.h \
     addpopup.h \
-    editpopup.h \
     deletedialog.h \
     book.h \
-    errorpopup.h
+    errorpopup.h \
+    selecterror.h
 
 FORMS    += mainwindow.ui \
     addpopup.ui \
-    editpopup.ui \
     deletedialog.ui \
-    errorpopup.ui
+    errorpopup.ui \
+    selecterror.ui
