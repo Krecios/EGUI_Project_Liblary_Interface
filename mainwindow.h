@@ -37,9 +37,11 @@ private:
     Ui::MainWindow *ui;
     QComboBox *clr;
     bool FirstStartup = true;
+    Liblary *Lib = new Liblary;
     void filter();
     void yearCombo();
     void start();
+    void ShowAll(Liblary *Show);
 };
 
 #endif // MAINWINDOW_H

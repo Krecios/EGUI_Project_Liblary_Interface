@@ -2,6 +2,9 @@
 #define ADDPOPUP_H
 
 #include <QDialog>
+#include "mainwindow.h"
+#include "book.h"
+#include "errorpopup.h"
 
 namespace Ui {
 class AddPopup;
@@ -14,6 +17,20 @@ class AddPopup : public QDialog
 public:
     explicit AddPopup(QWidget *parent = 0);
     ~AddPopup();
+    Book *GetData()
+    {
+        return ToBeAdded;
+    }
+    bool Confirm = false;
+    bool Add = false;
+    bool Edit = false;
+    QString Author;
+    QString Title;
+    QString Year;
+    void setAuthor();
+    void setTitle();
+    void setYear();
+    void SwapButton(QString NewText);
 
 private slots:
     void on_pushButton_clicked();
@@ -22,6 +39,7 @@ private slots:
 
 private:
     Ui::AddPopup *ui;
+    Book* ToBeAdded;
 };
 
 #endif // ADDPOPUP_H

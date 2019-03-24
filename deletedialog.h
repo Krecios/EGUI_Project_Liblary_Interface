@@ -14,6 +14,7 @@ class DeleteDialog : public QDialog
 public:
     explicit DeleteDialog(QWidget *parent = 0);
     ~DeleteDialog();
+    bool Confirm = false;
 
 private slots:
     void on_pushButton_clicked();

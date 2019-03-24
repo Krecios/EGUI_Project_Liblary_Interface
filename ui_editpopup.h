@@ -16,34 +16,31 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QTextEdit>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_EditPopup
 {
 public:
-    QTextEdit *textEdit_2;
     QLabel *label_2;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
     QLabel *label;
-    QTextEdit *textEdit_3;
     QLabel *label_3;
-    QTextEdit *textEdit;
+    QLineEdit *lineEdit;
+    QLineEdit *lineEdit_2;
+    QLineEdit *lineEdit_3;
 
     void setupUi(QDialog *EditPopup)
     {
         if (EditPopup->objectName().isEmpty())
             EditPopup->setObjectName(QStringLiteral("EditPopup"));
         EditPopup->resize(480, 249);
-        textEdit_2 = new QTextEdit(EditPopup);
-        textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
-        textEdit_2->setGeometry(QRect(140, 80, 311, 31));
         label_2 = new QLabel(EditPopup);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(60, 90, 47, 13));
+        label_2->setGeometry(QRect(80, 80, 47, 13));
         pushButton = new QPushButton(EditPopup);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(30, 180, 171, 41));
@@ -52,16 +49,19 @@ public:
         pushButton_2->setGeometry(QRect(250, 180, 171, 41));
         label = new QLabel(EditPopup);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(60, 40, 47, 13));
-        textEdit_3 = new QTextEdit(EditPopup);
-        textEdit_3->setObjectName(QStringLiteral("textEdit_3"));
-        textEdit_3->setGeometry(QRect(140, 130, 311, 31));
+        label->setGeometry(QRect(70, 30, 47, 13));
         label_3 = new QLabel(EditPopup);
         label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setGeometry(QRect(60, 130, 47, 20));
-        textEdit = new QTextEdit(EditPopup);
-        textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(140, 30, 311, 31));
+        label_3->setGeometry(QRect(80, 120, 47, 20));
+        lineEdit = new QLineEdit(EditPopup);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setGeometry(QRect(110, 20, 321, 31));
+        lineEdit_2 = new QLineEdit(EditPopup);
+        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+        lineEdit_2->setGeometry(QRect(110, 70, 321, 31));
+        lineEdit_3 = new QLineEdit(EditPopup);
+        lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
+        lineEdit_3->setGeometry(QRect(110, 120, 321, 31));
 
         retranslateUi(EditPopup);
 
