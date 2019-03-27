@@ -21,7 +21,8 @@ void AddPopup::on_pushButton_clicked()
 {
     if(Add == true)
     {
-        ToBeAdded = new Book(ui->lineEdit->text(), ui->lineEdit_2->text(), ui->lineEdit_3->text(), 0);
+        int Year = ui->lineEdit_3->text().toInt();
+        ToBeAdded = new Book(ui->lineEdit->text(), ui->lineEdit_2->text(), Year, 0);
         if(ui->lineEdit->text() == "" || ui->lineEdit_2->text() == "" || ui->lineEdit_3->text() == "")
         {
             ErrorPopup Error;
@@ -36,7 +37,8 @@ void AddPopup::on_pushButton_clicked()
     }
     if(Edit == true)
     {
-        ToBeAdded = new Book(ui->lineEdit->text(), ui->lineEdit_2->text(), ui->lineEdit_3->text(), 0);
+        int Year = ui->lineEdit_3->text().toInt();
+        ToBeAdded = new Book(ui->lineEdit->text(), ui->lineEdit_2->text(), Year, 0);
         if(ui->lineEdit->text() == "" || ui->lineEdit_2->text() == "" || ui->lineEdit_3->text() == "")
         {
             ErrorPopup Error;
@@ -68,11 +70,18 @@ void AddPopup::setTitle()
 
 void AddPopup::setYear()
 {
-    ui->lineEdit_3->setText(Year);
+    QString StringYear = QString::number(Year);
+    ui->lineEdit_3->setText(StringYear);
 }
 
 void AddPopup::SwapButton(QString NewText)
 {
     ui->pushButton->setText(NewText);
+}
+
+void AddPopup::SetValidator()
+{
+    QValidator *Valid = new QIntValidator(-2500, 2500, this);
+    ui->lineEdit_3->setValidator(Valid);
 }
 

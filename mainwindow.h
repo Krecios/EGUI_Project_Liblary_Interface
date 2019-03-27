@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QString>
 #include <QComboBox>
+#include <QIntValidator>
 #include "book.h"
 
 namespace Ui {

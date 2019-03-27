@@ -26,11 +26,12 @@ public:
     bool Edit = false;
     QString Author;
     QString Title;
-    QString Year;
+    int Year;
     void setAuthor();
     void setTitle();
     void setYear();
     void SwapButton(QString NewText);
+    void SetValidator();
 
 private slots:
     void on_pushButton_clicked();

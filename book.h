@@ -6,13 +6,13 @@ private:
     int index;
     QString Author;
     QString Title;
-    QString Year;
+    int Year;
 public:
     Book()
     {
     }
 
-    Book(QString NA, QString NT, QString NY, int NI)
+    Book(QString NA, QString NT, int NY, int NI)
     {
         Author = NA;
         Title = NT;
@@ -34,7 +34,7 @@ public:
         return Title;
     }
 
-    QString getYear()
+    int getYear()
     {
         return Year;
     }
@@ -54,7 +54,7 @@ public:
         Title = NewTitle;
     }
 
-    void ModifyYear(QString NewYear)
+    void ModifyYear(int NewYear)
     {
         Year = NewYear;
     }
@@ -113,7 +113,7 @@ public:
         }
     }
 
-    QString YearFromIndex(int index)
+    int YearFromIndex(int index)
     {
         for(int i = 0; i<Lib.count(); i++)
         {
@@ -124,7 +124,7 @@ public:
         }
     }
 
-    void ModifyOnIndex(int index, QString NewAuthor, QString NewTitle, QString NewYear)
+    void ModifyOnIndex(int index, QString NewAuthor, QString NewTitle, int NewYear)
     {
         for(int i = 0; i<Lib.count(); i++)
         {
@@ -155,7 +155,9 @@ public:
             {
                 QString fileLine = in.readLine();
                 QStringList lineToken = fileLine.split(";",QString::SkipEmptyParts);
-                Book *newBook = new Book(lineToken.at(0),lineToken.at(1),lineToken.at(2), RowCount);
+                QString YearGet = lineToken.at(2);
+                int Year = YearGet.toInt();
+                Book *newBook = new Book(lineToken.at(0),lineToken.at(1),Year, RowCount);
                 Lib.append(newBook);
                 RowCount++;
             }
@@ -206,6 +208,23 @@ public:
     int rowCount(const QModelIndex &parent) const
     {
         return Lib.count();
+    }
+
+    QVariant headerData(int section,Qt::Orientation,int role) const
+    {
+        if(role != Qt::DisplayRole)
+        {
+            return QVariant();
+        }
+        if(role == Qt::DisplayRole)
+        {
+            if(section == 0)
+                return tr("Author");
+            if(section == 1)
+                return tr("Title");
+            if(section == 2)
+                return tr("Year");
+        }
     }
 
     void SwapContent(int index, Book* Swap)

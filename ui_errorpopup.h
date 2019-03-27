@@ -17,12 +17,15 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_ErrorPopup
 {
 public:
+    QVBoxLayout *verticalLayout_2;
+    QVBoxLayout *verticalLayout;
     QLabel *label;
     QPushButton *pushButton;
 
@@ -30,13 +33,24 @@ public:
     {
         if (ErrorPopup->objectName().isEmpty())
             ErrorPopup->setObjectName(QStringLiteral("ErrorPopup"));
-        ErrorPopup->resize(400, 103);
+        ErrorPopup->resize(378, 116);
+        verticalLayout_2 = new QVBoxLayout(ErrorPopup);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         label = new QLabel(ErrorPopup);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(40, 10, 331, 51));
+
+        verticalLayout->addWidget(label);
+
         pushButton = new QPushButton(ErrorPopup);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(120, 60, 141, 31));
+
+        verticalLayout->addWidget(pushButton);
+
+
+        verticalLayout_2->addLayout(verticalLayout);
+
 
         retranslateUi(ErrorPopup);
 

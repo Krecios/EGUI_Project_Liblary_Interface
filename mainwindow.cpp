@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QWidget::setWindowTitle("Liblary");
     clr=ui->comboBox;
     yearCombo();
     start();
@@ -45,7 +46,7 @@ void MainWindow::start()
 
 void MainWindow::yearCombo()
 {
-    QStringList year;
+    QList<int> year;
     QFile file("BooksDatabase.csv");
     if (file.open(QIODevice::ReadOnly))
     {
@@ -59,7 +60,9 @@ void MainWindow::yearCombo()
             {
                 if (j == 2)
                 {
-                    year<<lineToken.at(j);
+                    QString SYearToAdd = lineToken.at(j);
+                    int YearToAdd = SYearToAdd.toInt();
+                    year.append(YearToAdd);
                 }
             }
         }
@@ -69,9 +72,15 @@ void MainWindow::yearCombo()
 
     if(FirstStartup == true)
     {
-        year.sort();
-        year.removeDuplicates();
-        ui->comboBox->addItems(year);
+        QSet<int> YearSet = year.toSet();
+        year = YearSet.toList();
+        qSort(year);
+        QStringList strings;
+        for(int i = 0; i<year.size(); i++)
+        {
+            strings << QString::number(year[i]);
+        }
+        ui->comboBox->addItems(strings);
         ui->comboBox->setCurrentIndex(-1);
     }
 }
@@ -88,6 +97,7 @@ void MainWindow::on_pushButton_clicked()
 {
     Book *Added;
     AddPopup addDialog;
+    addDialog.SetValidator();
     addDialog.SwapButton("Add");
     addDialog.Add = true;
     addDialog.Confirm = false;
@@ -102,6 +112,9 @@ void MainWindow::on_pushButton_clicked()
     addDialog.Add = false;
     start();
     filter();
+    ui->comboBox->clear();
+    FirstStartup = true;
+    yearCombo();
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -116,12 +129,13 @@ void MainWindow::on_pushButton_2_clicked()
     }
     Book *Edit;
     AddPopup editDialog;
+    editDialog.SetValidator();
     editDialog.SwapButton("Save");
     editDialog.Edit = true;
     int Row = ui->tableView->selectionModel()->currentIndex().row();
     QString EAuthor = Lib->AuthorFromIndex(Row);
     QString ETitle = Lib->TitleFromIndex(Row);
-    QString EYear = Lib->YearFromIndex(Row);
+    int EYear = Lib->YearFromIndex(Row);
     editDialog.Author = EAuthor;
     editDialog.Title = ETitle;
     editDialog.Year = EYear;
@@ -141,6 +155,9 @@ void MainWindow::on_pushButton_2_clicked()
     editDialog.Edit = false;
     start();
     filter();
+    ui->comboBox->clear();
+    FirstStartup = true;
+    yearCombo();
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -169,6 +186,10 @@ void MainWindow::on_pushButton_3_clicked()
         Lib->SaveToFile();
     }
     start();
+    filter();
+    ui->comboBox->clear();
+    FirstStartup = true;
+    yearCombo();
 }
 
 void MainWindow::filter()

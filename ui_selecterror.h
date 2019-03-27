@@ -17,12 +17,15 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_SelectError
 {
 public:
+    QVBoxLayout *verticalLayout_2;
+    QVBoxLayout *verticalLayout;
     QLabel *label;
     QPushButton *pushButton;
 
@@ -31,12 +34,23 @@ public:
         if (SelectError->objectName().isEmpty())
             SelectError->setObjectName(QStringLiteral("SelectError"));
         SelectError->resize(400, 129);
+        verticalLayout_2 = new QVBoxLayout(SelectError);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         label = new QLabel(SelectError);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(80, 20, 301, 51));
+
+        verticalLayout->addWidget(label);
+
         pushButton = new QPushButton(SelectError);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(130, 80, 141, 31));
+
+        verticalLayout->addWidget(pushButton);
+
+
+        verticalLayout_2->addLayout(verticalLayout);
+
 
         retranslateUi(SelectError);
 
